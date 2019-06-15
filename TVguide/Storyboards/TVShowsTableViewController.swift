@@ -32,6 +32,7 @@ class TVShowsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        showsSearchBar.delegate = self
         tableView.register(showCellNib, forCellReuseIdentifier: showCellReuseIdentifier)
         
         client.fetchTVShows { (result) in
@@ -64,19 +65,11 @@ class TVShowsTableViewController: UITableViewController {
         return showCell
     }
 
-
-    // MARK: - Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-    }
-
 }
 
 extension TVShowsTableViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        showsSearchBar.delegate = self
         initialTVShows = tvShows
     }
     

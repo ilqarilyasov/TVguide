@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Shows Table View Controller-->
+        <!--Trending Shows-->
         <scene sceneID="NnO-VU-yl7">
             <objects>
                 <tableViewController id="0E9-lM-kfv" customClass="TVShowsTableViewController" customModule="TVguide" customModuleProvider="target" sceneMemberID="viewController">
@@ -49,9 +49,7 @@
                             <outlet property="delegate" destination="0E9-lM-kfv" id="z2M-T3-s1O"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="QGW-K8-jaj">
-                        <nil key="title"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Trending Shows" id="QGW-K8-jaj"/>
                     <connections>
                         <outlet property="showsSearchBar" destination="kgJ-Bx-iHW" id="uRd-kM-oD5"/>
                     </connections>
