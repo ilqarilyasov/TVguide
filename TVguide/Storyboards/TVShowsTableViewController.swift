@@ -10,8 +10,11 @@ import UIKit
 
 class TVShowsTableViewController: UITableViewController {
     
+    // MARK: - Properties
+    
     private let client = ShowClient()
     private let showCellReuseIdentifier = "ShowCell"
+    private var initialTVShows = TVShows()
     private var tvShows = TVShows() {
         didSet {
             DispatchQueue.main.async {
@@ -19,10 +22,17 @@ class TVShowsTableViewController: UITableViewController {
             }
         }
     }
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var showsSearchBar: UISearchBar!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        showsSearchBar.delegate = self
+        
         client.fetchTVShows { (result) in
             switch result{
             case .failure(let error):
@@ -57,4 +67,20 @@ class TVShowsTableViewController: UITableViewController {
         
     }
 
+}
+
+extension TVShowsTableViewController: UISearchBarDelegate {
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        initialTVShows = tvShows
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            tvShows = initialTVShows
+            return
+        }
+        
+        tvShows = initialTVShows.filter { $0.name.lowercased().contains(searchText.lowercased())}
+    }
 }
