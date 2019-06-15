@@ -14,6 +14,7 @@ class TVShowsTableViewController: UITableViewController {
     
     private let client = ShowClient()
     private let showCellReuseIdentifier = "ShowCell"
+    private let showCellNib = UINib(nibName: "ShowTableViewCell", bundle: nil)
     private var initialTVShows = TVShows()
     private var tvShows = TVShows() {
         didSet {
@@ -31,7 +32,7 @@ class TVShowsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        showsSearchBar.delegate = self
+        tableView.register(showCellNib, forCellReuseIdentifier: showCellReuseIdentifier)
         
         client.fetchTVShows { (result) in
             switch result{
@@ -47,17 +48,20 @@ class TVShowsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return tvShows.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: showCellReuseIdentifier, for: indexPath)
         
-        let show = tvShows[indexPath.row]
-        cell.textLabel?.text = show.name
+        guard let showCell = cell as? ShowTableViewCell else {
+            fatalError("Couldn't configure custom show cell")
+        }
         
-        return cell
+        let show = tvShows[indexPath.row]
+        showCell.show = show
+        
+        return showCell
     }
 
 
@@ -72,6 +76,7 @@ class TVShowsTableViewController: UITableViewController {
 extension TVShowsTableViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        showsSearchBar.delegate = self
         initialTVShows = tvShows
     }
     
