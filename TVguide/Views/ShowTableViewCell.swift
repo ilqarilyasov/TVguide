@@ -12,6 +12,7 @@ class ShowTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
+    private let photoFetchQueue = OperationQueue()
     var show: Show? {
         didSet { updateView() }
     }
@@ -32,7 +33,17 @@ class ShowTableViewCell: UITableViewCell {
         showNameLabel.text = show.name
         tvChannelLabel.text = show.tvChannel
         
-        // TODO: - Load image
+        
+        let fetchOp = FetchPhotoOperation(show: show)
+        let completionOp = BlockOperation {
+            if let image = fetchOp.image {
+                self.showImageView.image = image
+            }
+        }
+        
+        completionOp.addDependency(fetchOp)
+        photoFetchQueue.addOperation(fetchOp)
+        OperationQueue.main.addOperation(completionOp)
     }
     
 }
