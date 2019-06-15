@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias TVShows = [Show]
+
 struct Show: Decodable {
     let identifier: Int
     let imageURL: String
@@ -28,5 +30,3 @@ struct Show: Decodable {
         case episodes = "listings"
     }
 }
-
-typealias TVShows = [Show]
